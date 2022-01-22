@@ -1,0 +1,163 @@
+#include "main.h"
+#include <fstream>
+#include <iostream>
+
+/**
+ * A callback function for LLEMU's center button.
+ *
+ * When this callback is fired, it will toggle line 2 of the LCD text between
+ * "I was pressed!" and nothing.
+ */
+void on_center_button() {
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(2, "I was pressed!");
+	} else {
+		pros::lcd::clear_line(2);
+	}
+}
+
+/**
+ * Runs initialization code. This occurs as soon as the program is started.
+ *
+ * All other competition modes are blocked by initialize; it is recommended
+ * to keep execution time for this mode under a few seconds.
+ */
+void initialize() {
+	pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
+
+	pros::lcd::register_btn1_cb(on_center_button);
+}
+
+/**
+ * Runs while the robot is in the disabled state of Field Management System or
+ * the VEX Competition Switch, following either autonomous or opcontrol. When
+ * the robot is enabled, this task will exit.
+ */
+void disabled() {}
+
+/**
+ * Runs after initialize(), and before autonomous when connected to the Field
+ * Management System or the VEX Competition Switch. This is intended for
+ * competition-specific initialization routines, such as an autonomous selector
+ * on the LCD.
+ *
+ * This task will exit when the robot is enabled and autonomous or opcontrol
+ * starts.
+ */
+void competition_initialize() {}
+
+/**
+ * Runs the user autonomous code. This function will be started in its own task
+ * with the default priority and stack size whenever the robot is enabled via
+ * the Field Management System or the VEX Competition Switch in the autonomous
+ * mode. Alternatively, this function may be called in initialize or opcontrol
+ * for non-competition testing purposes.
+ *
+ * If the robot is disabled or communications is lost, the autonomous task
+ * will be stopped. Re-enabling the robot will restart the task, not re-start it
+ * from where it left off.
+ */
+void autonomous() {}
+
+/**
+ * Runs the operator control code. This function will be started in its own task
+ * with the default priority and stack size whenever the robot is enabled via
+ * the Field Management System or the VEX Competition Switch in the operator
+ * control mode.
+ *
+ * If no competition control is connected, this function will run immediately
+ * following initialize().
+ *
+ * If the robot is disabled or communications is lost, the
+ * operator control task will be stopped. Re-enabling the robot will restart the
+ * task, not resume it from where it left off.
+ */
+void opcontrol() {
+
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+	Drivetrain drive = Drivetrain();
+
+	pros::ADIEncoder rightEncoder('E', 'F', true);
+
+	PIDController drivePID =  PIDController(0.1, 0.01, 0.1);
+
+	const double TICKS_TO_INCHES = (2*M_PI*2)/360;
+
+	int target = 12;
+
+	rightEncoder.reset();
+
+	while(true){
+		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
+
+		drive.runRightDrive(power);
+		drive.runLeftDrive(power);
+
+	}
+
+
+	// pros::Controller master(pros::E_CONTROLLER_MASTER);
+	//
+	// pros::c::ext_adi_ultrasonic_t ultrasonic = pros::c::ext_adi_ultrasonic_init(10, 'G', 'H');
+	// pros::c::ext_adi_ultrasonic_t ultrasonic2 = pros::c::ext_adi_ultrasonic_init(10, 'C', 'D');
+	//
+	// pros::Motor spinner(20);
+	//
+	//
+	// int min = 115;
+	// int max = 120;
+	//
+	// int spinState = 0;
+	//
+	// int pot_val = pros::c::ext_adi_analog_calibrate(10, 'A');
+	//
+	// while(true){
+	// 	bool spinBtn = master.get_digital_new_press(DIGITAL_X);
+	// 	int distance = pros::c::ext_adi_ultrasonic_get(ultrasonic);
+	// 	int distance2 = pros::c::ext_adi_ultrasonic_get(ultrasonic2);
+	//
+	// 	int read_val = pros::c::ext_adi_analog_read_calibrated(10, 'A');
+	//
+	//
+	// 	if((distance > min && distance < max) && (distance2 > min + 5 && distance2 < max + 5) ){
+	// 		spinner.move(0);
+	// 		master.print(2,2, "%d %d ", (distance), distance2);
+	// 		/break;
+	// 	}
+	// 	else{
+	// 		spinner.move(50);
+	// 	}
+	//
+	//
+	// 	std::cout << read_val;
+	// 	master.print(2,2, "%d", read_val);
+	// 	pros::delay(10);
+	// }
+
+
+	// pros::ADIUltrasonic ultrasonic ('A', 'B');
+	//
+	// pros::Controller master(pros::E_CONTROLLER_MASTER);
+	// pros::Motor left_mtr(1);
+	// pros::Motor right_mtr(2);
+	//
+	//
+	// while (true) {
+	// 	pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+	// 	                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+	// 	                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+	// 	int left = master.get_analog(ANALOG_LEFT_Y);
+	// 	int right = master.get_analog(ANALOG_RIGHT_Y);
+	//
+	// 	left_mtr = left;
+	// 	right_mtr = right;
+	//
+	// 	pros::lcd::print(7, "%d", (ultrasonic.get_value()));
+	//
+	// 	pros::delay(20);
+	// }
+}
