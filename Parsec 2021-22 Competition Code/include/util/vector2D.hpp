@@ -28,6 +28,7 @@ class Vector
     double getComponent(int component);
     void add(Vector vector);
 
+
 };
 
 #endif

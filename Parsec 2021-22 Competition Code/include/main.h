@@ -42,13 +42,16 @@
 #include "subsystems/arm.hpp"
 #include "subsystems/primary.hpp"
 
+//util
+#include "util/vector2D.hpp"
+
 //algorithms
 #include "algorithms/pid_controller.hpp"
 #include "algorithms/rate_limiter.hpp"
+#include "algorithms/odometry.hpp"
+#include "algorithms/motion_magic.hpp"
 
 
-//util
-#include "util/vector2D.hpp"
 
 
 /**
