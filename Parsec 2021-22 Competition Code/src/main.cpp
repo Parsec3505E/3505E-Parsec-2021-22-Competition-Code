@@ -82,22 +82,61 @@ void opcontrol() {
 	Drivetrain drive = Drivetrain();
 
 	pros::ADIEncoder rightEncoder('E', 'F', true);
+	pros::ADIEncoder backEncoder('C', 'D');
 
-	PIDController drivePID =  PIDController(0.1, 0.01, 0.1);
+
+	pros::ADIDigitalOut piston('A');
+
+	PIDController drivePID =  PIDController(0.15, 0, 0.1);
+	PIDController turnPID =  PIDController(0.5, 0, 0);
 
 	const double TICKS_TO_INCHES = (2*M_PI*2)/360;
 
-	int target = 12;
+	int target = 32;
 
 	rightEncoder.reset();
 
-	while(true){
-		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
+	piston.set_value(false);
+
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * (1);
+		master.print(2,2,"%d", power);
+		drive.runRightDrive(power);
+		drive.runLeftDrive(power);
+	}
+	pros::delay(50);
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	rightEncoder.reset();
+
+	target = 15;
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * (127/100);
 
 		drive.runRightDrive(power);
 		drive.runLeftDrive(power);
 
 	}
+	pros::delay(50);
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	rightEncoder.reset();
+	backEncoder.reset();
+
+
+	target = 15;
+
+	while(abs(backEncoder.get_value()) <= target){
+		int power = turnPID.updatePID(rightEncoder.get_value(), -target) * (127/100);
+		master.print(2,2,"%d", power);
+		drive.runRightDrive(-power);
+		drive.runLeftDrive(power);
+
+	}
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
 
 
 	// pros::Controller master(pros::E_CONTROLLER_MASTER);
