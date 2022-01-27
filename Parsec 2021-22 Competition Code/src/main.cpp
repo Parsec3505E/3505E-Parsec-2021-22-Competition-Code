@@ -84,90 +84,127 @@ void opcontrol() {
 	pros::ADIEncoder rightEncoder('E', 'F', true);
 	pros::ADIEncoder backEncoder('C', 'D');
 
+	pros::ADIAnalogIn pot()
+
 
 	pros::ADIDigitalOut piston('A');
 
 	PIDController drivePID =  PIDController(0.15, 0, 0.1);
 	PIDController turnPID =  PIDController(0.5, 0, 0.1);
 
-	const double TICKS_TO_INCHES = (2*M_PI*2)/360;
+	const double TICKS_TO_INCHES = (2.75*M_PI)/360;
 
-	int target = 32;
+	int target = 21;
 
 	rightEncoder.reset();
 
 	piston.set_value(false);
 
+	//This is just a test for the pot sensor
+	pros::c::ext_adi_analog_calibrate(10, 'A');
+	while(1==1)
+	{
+		master.print(2,2,"%f", pros::c::ext_adi_analog_read_calibrated(10, 'A'));
+	}
 
 	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		//int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 100;
-		drive.runRightDrive(75);
-		drive.runLeftDrive(75);
-	}
-	pros::delay(25);
-	//drive.runRightDrive(0);
-	//drive.runLeftDrive(0);
-	rightEncoder.reset();
-
-	target = 10;
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
-
-		drive.runRightDrive(power);
-		drive.runLeftDrive(power);
-
-	}
-	pros::delay(25);
-	//drive.runRightDrive(0);
-	//drive.runLeftDrive(0);
-
-
-	backEncoder.reset();
-
-
-	target = 10;
-
-	while(abs(backEncoder.get_value()) <= target){
-		int power = turnPID.updatePID(backEncoder.get_value(), -target) * 100;
-		master.print(2,2,"%d", power);
-		drive.runRightDrive(-power);
-		drive.runLeftDrive(power);
-
-	}
-	pros::delay(25);
-	//drive.runRightDrive(0);
-	//drive.runLeftDrive(0);
-
-	rightEncoder.reset();
-
-	target = 42;
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 100;
-		master.print(2,2,"%d", power);
-		drive.runRightDrive(power);
-		drive.runLeftDrive(power);
-	}
-	pros::delay(25);
-	//drive.runRightDrive(0);
-	//drive.runLeftDrive(0);
-
-	backEncoder.reset();
-
-
-	target = 20.5;
-
-	while(abs(backEncoder.get_value()) <= target){
-		int power = turnPID.updatePID(backEncoder.get_value(), -target) * 100;
-		master.print(2,2,"%d", power);
-		drive.runRightDrive(power);
-		drive.runLeftDrive(-power);
-
+		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
+		// if(power < -127)
+		// {
+		// 	power = -127;
+		// }
+		//master.print(2,2,"%d", power);
+		drive.runRightDrive(-50);
+		drive.runLeftDrive(-50);
 	}
 	drive.runRightDrive(0);
 	drive.runLeftDrive(0);
+	pros::delay(25);
 
+	rightEncoder.reset();
+
+	target = 6;
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+		//int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
+
+		drive.runRightDrive(50);
+		drive.runLeftDrive(50);
+	}
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	pros::delay(100);
+
+	rightEncoder.reset();
+
+
+
+
+	target = 3;
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+		// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
+		// master.print(2,2,"%d", power);
+		// drive.runRightDrive(-power);
+		// drive.runLeftDrive(power);
+
+		drive.runRightDrive(50);
+		drive.runLeftDrive(-50);
+	}
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	pros::delay(50);
+
+	rightEncoder.reset();
+
+	target = 33;
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
+		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
+		if(power < -127)
+		{
+			power = -127;
+		}
+		drive.runRightDrive(power);
+		drive.runLeftDrive(power);
+	}
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	pros::delay(100);
+
+	rightEncoder.reset();
+
+	target = 5;
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+		// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
+		// master.print(2,2,"%d", power);
+		// drive.runRightDrive(-power);
+		// drive.runLeftDrive(power);
+
+		drive.runRightDrive(-50);
+		drive.runLeftDrive(50);
+	}
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	pros::delay(50);
+
+	target = 23;
+
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
+		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
+		if(power < -127)
+		{
+			power = -127;
+		}
+		drive.runRightDrive(power);
+		drive.runLeftDrive(power);
+	}
+	drive.runRightDrive(0);
+	drive.runLeftDrive(0);
+	pros::delay(50);
+
+	rightEncoder.reset();
 
 
 	// pros::Controller master(pros::E_CONTROLLER_MASTER);

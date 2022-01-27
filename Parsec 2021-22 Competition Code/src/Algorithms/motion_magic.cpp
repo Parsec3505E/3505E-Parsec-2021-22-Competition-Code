@@ -2,7 +2,6 @@
 
 MotionMagic::MotionMagic(){
   odometry = Odometry(Drivetrain.rightEncoder, Drivetrain.leftEncoder, Drivetrain.backEncoder);
-
 }
 
 //Drive Methods
