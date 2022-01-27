@@ -3,7 +3,7 @@
 Arm::Arm(){
 
   //Motor Objects
-  armMotor = new pros::Motor(6);
+  armMotor = new pros::Motor(16);
 
 }
 

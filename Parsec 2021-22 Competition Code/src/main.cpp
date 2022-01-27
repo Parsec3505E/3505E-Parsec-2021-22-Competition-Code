@@ -81,10 +81,10 @@ void opcontrol() {
 
 	Drivetrain drive = Drivetrain();
 
+	pros::Motor armMotor(16);
+
 	pros::ADIEncoder rightEncoder('E', 'F', true);
 	pros::ADIEncoder backEncoder('C', 'D');
-
-	pros::ADIAnalogIn pot()
 
 
 	pros::ADIDigitalOut piston('A');
@@ -99,13 +99,6 @@ void opcontrol() {
 	rightEncoder.reset();
 
 	piston.set_value(false);
-
-	//This is just a test for the pot sensor
-	pros::c::ext_adi_analog_calibrate(10, 'A');
-	while(1==1)
-	{
-		master.print(2,2,"%f", pros::c::ext_adi_analog_read_calibrated(10, 'A'));
-	}
 
 	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
 		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
@@ -137,9 +130,6 @@ void opcontrol() {
 
 	rightEncoder.reset();
 
-
-
-
 	target = 3;
 
 	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
@@ -157,7 +147,7 @@ void opcontrol() {
 
 	rightEncoder.reset();
 
-	target = 33;
+	target = 27;
 
 	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
 		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
@@ -174,7 +164,7 @@ void opcontrol() {
 
 	rightEncoder.reset();
 
-	target = 5;
+	target = 3;
 
 	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
 		// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
@@ -189,16 +179,19 @@ void opcontrol() {
 	drive.runLeftDrive(0);
 	pros::delay(50);
 
-	target = 23;
+	armMotor.tare_position();
+	while(armMotor.get_position() > -1500)
+	{
+		armMotor.move_velocity(-90);
+		pros::delay(25);
+	}
+	armMotor.move_velocity(0);
 
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
-		int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
-		if(power < -127)
-		{
-			power = -127;
-		}
-		drive.runRightDrive(power);
-		drive.runLeftDrive(power);
+	target = 23;
+	piston.set_value(true);
+	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+		drive.runRightDrive(-127);
+		drive.runLeftDrive(-127);
 	}
 	drive.runRightDrive(0);
 	drive.runLeftDrive(0);
@@ -206,7 +199,7 @@ void opcontrol() {
 
 	rightEncoder.reset();
 
-
+	piston.set_value(false);
 	// pros::Controller master(pros::E_CONTROLLER_MASTER);
 	//
 	// pros::c::ext_adi_ultrasonic_t ultrasonic = pros::c::ext_adi_ultrasonic_init(10, 'G', 'H');
