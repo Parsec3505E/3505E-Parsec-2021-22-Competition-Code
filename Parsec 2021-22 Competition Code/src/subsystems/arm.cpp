@@ -1,9 +1,15 @@
 #include "main.h"
 
+HIGH_BRANCH = -2000;
+MEDIUM_BRANCH = -1000;
+LOW_BRANCH = -500;
+RESET = 0;
+
+
 Arm::Arm(){
 
   //Motor Objects
-  armMotor = new pros::Motor(16);
+  armMotor = new pros::Motor(16, true);
 
 }
 
@@ -32,4 +38,27 @@ int Arm::calibratePot(){
 
 int Arm::potGetVal(){
   return pros::c::ext_adi_analog_read(10, 'C');
+}
+
+
+//Moving to the different branches
+
+int Arm::getError(int target){
+  return target - armMotor.get_position();
+}
+
+void Arm::moveToHigh(int vel){
+  armMotor.move_relative(getError(HIGH_BRANCH), vel);
+}
+
+void Arm::moveToMedium(int vel){
+  armMotor.move_relative(getError(MEDIUM_BRANCH), vel);
+}
+
+void Arm::moveToLow(int vel){
+  armMotor.move_relative(getError(LOW_BRANCH), vel);
+}
+
+void Arm::moveToReset(int vel){
+  armMotor.move_relative(getError(RESET), vel);
 }

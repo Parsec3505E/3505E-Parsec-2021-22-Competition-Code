@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-
 /**
  * A callback function for LLEMU's center button.
  *
@@ -30,8 +29,6 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
-
-
 }
 
 /**
@@ -63,159 +60,7 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {
-	int target;
-
-	PIDController drivePID =  PIDController(0.15, 0, 0.1);
-	PIDController turnPID =  PIDController(0.5, 0, 0.1);
-
-	Drivetrain drive = Drivetrain();
-	const double TICKS_TO_INCHES = (2.75*M_PI)/360;
-
- 	pros::ADIEncoder rightEncoder('C', 'D', true);
-	pros::Motor armMotor(16);
-
-	armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
-	target = 60;
-
-	rightEncoder.reset();
-
-
-
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
-		// if(power < -127)
-		// {
-		// 	power = -127;
-		// }
-		//master.print(2,2,"%d", power);
-		drive.runRightDrive(115);
-		drive.runLeftDrive(115);
-	}
-	drive.setBrake();
-	drive.runRightDrive(0);
-	drive.runLeftDrive(0);
-	pros::delay(25);
-
-	// armMotor.tare_position();
-	// while(armMotor.get_position() > -1800)
-	// {
-	// 	armMotor.move_velocity(-90);
-	// 	pros::delay(25);
-	// }
-	// armMotor.move_velocity(0);
-
-	target = 30;
-
-	rightEncoder.reset();
-
-
-
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
-		// if(power < -127)
-		// {
-		// 	power = -127;
-		// }
-		//master.print(2,2,"%d", power);
-		drive.runRightDrive(50);
-		drive.runLeftDrive(50);
-	}
-	drive.setBrake();
-	drive.runRightDrive(0);
-	drive.runLeftDrive(0);
-	pros::delay(25);
-
-	target = 15;
-
-	rightEncoder.reset();
-
-
-
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
-		// if(power < -127)
-		// {
-		// 	power = -127;
-		// }
-		//master.print(2,2,"%d", power);
-		drive.runRightDrive(-50);
-		drive.runLeftDrive(-50);
-	}
-	drive.setBrake();
-	drive.runRightDrive(0);
-	drive.runLeftDrive(0);
-	pros::delay(25);
-
-	// rightEncoder.reset();
-	//
-	// target = 6;
-	//
-	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-	// 	//int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
-	//
-	// 	drive.runRightDrive(50);
-	// 	drive.runLeftDrive(50);
-	// }
-	// drive.runRightDrive(0);
-	// drive.runLeftDrive(0);
-	// pros::delay(100);
-	//
-	// rightEncoder.reset();
-	//
-	// target = 3;
-	//
-	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-	// 	// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
-	// 	// master.print(2,2,"%d", power);
-	// 	// drive.runRightDrive(-power);
-	// 	// drive.runLeftDrive(power);
-	//
-	// 	drive.runRightDrive(50);
-	// 	drive.runLeftDrive(-50);
-	// }
-	// drive.runRightDrive(0);
-	// drive.runLeftDrive(0);
-	// pros::delay(50);
-	//
-	// rightEncoder.reset();
-	//
-	// target = 24.5;
-	//
-	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
-	// 	int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
-	// 	if(power < -127)
-	// 	{
-	// 		power = -127;
-	// 	}
-	// 	drive.runRightDrive(power);
-	// 	drive.runLeftDrive(power);
-	// }
-	// drive.runRightDrive(0);
-	// drive.runLeftDrive(0);
-	// pros::delay(100);
-	//
-	// rightEncoder.reset();
-	//
-	// target = 3;
-	//
-	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-	// 	// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
-	// 	// master.print(2,2,"%d", power);
-	// 	// drive.runRightDrive(-power);
-	// 	// drive.runLeftDrive(power);
-	//
-	// 	drive.runRightDrive(-50);
-	// 	drive.runLeftDrive(50);
-	// }
-	// drive.runRightDrive(0);
-	// drive.runLeftDrive(0);
-	// pros::delay(50);
-
+void autonomous() {}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -230,33 +75,13 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-
-}
 void opcontrol() {
-// 	pros::Controller master(CONTROLLER_MASTER);
-// 	Arm *arm = new Arm();
-// 	armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-// 	armMotor.tare_position();
-// 	while(true){
-// 	if(master.get_digital_new_press(DIGITAL_R1)){
-// 		armMotor.move_relative(-3000, 100);
-// 	}
-//
-// 	if(master.get_digital_new_press(DIGITAL_L1)){
-// 		armMotor.move_relative(-5000, 100);
-//
-// 	}
-// }
 
-
-
-
+	pros::Controller master(CONTROLLER_MASTER);
 	pros::Controller partner(CONTROLLER_PARTNER);
 
 	pros::ADIDigitalOut piston('A');
 	pros::ADIDigitalOut secondary('B');
-
-	pros::ADIEncoder rightEncoder('C', 'D', true);
 
 	pros::Motor rightBack(11, true);
 	pros::Motor rightFront(3, true);
@@ -279,12 +104,9 @@ void opcontrol() {
 
 	int intake_state = 0;
 
-	const double TICKS_TO_INCHES = (2.75*M_PI)/360;
 
-	rightEncoder.reset();
 
 	while (true) {
-
 		bool piston_button = partner.get_digital_new_press(DIGITAL_B);
 		bool secondary_butn = partner.get_digital_new_press(DIGITAL_RIGHT);
 		bool intake_button = partner.get_digital_new_press(DIGITAL_UP);

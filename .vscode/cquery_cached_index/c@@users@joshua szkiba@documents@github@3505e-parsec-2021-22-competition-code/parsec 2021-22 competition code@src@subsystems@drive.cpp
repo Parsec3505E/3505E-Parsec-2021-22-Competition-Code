@@ -7,8 +7,6 @@ Drivetrain::Drivetrain(){
 	leftFront = new pros::Motor(9);
 	leftBack = new pros::Motor(4);
 
-  setBrake();
-
   //Encoder Objects
   rightEncoder = new pros::ADIEncoder('A', 'B', true);
   leftEncoder = new pros::ADIEncoder('C', 'D');
