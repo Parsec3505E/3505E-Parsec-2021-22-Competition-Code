@@ -64,157 +64,157 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	int target;
-
-	PIDController drivePID =  PIDController(0.15, 0, 0.1);
-	PIDController turnPID =  PIDController(0.5, 0, 0.1);
-
-	Drivetrain drive = Drivetrain();
-	const double TICKS_TO_INCHES = (2.75*M_PI)/360;
-
- 	pros::ADIEncoder rightEncoder('C', 'D', true);
-	pros::Motor armMotor(16);
-
-	armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
-	target = 60;
-
-	rightEncoder.reset();
-
-
-
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
-		// if(power < -127)
-		// {
-		// 	power = -127;
-		// }
-		//master.print(2,2,"%d", power);
-		drive.runRightDrive(115);
-		drive.runLeftDrive(115);
-	}
-	drive.setBrake();
-	drive.runRightDrive(0);
-	drive.runLeftDrive(0);
-	pros::delay(25);
-
-	// armMotor.tare_position();
-	// while(armMotor.get_position() > -1800)
-	// {
-	// 	armMotor.move_velocity(-90);
-	// 	pros::delay(25);
-	// }
-	// armMotor.move_velocity(0);
-
-	target = 30;
-
-	rightEncoder.reset();
-
-
-
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
-		// if(power < -127)
-		// {
-		// 	power = -127;
-		// }
-		//master.print(2,2,"%d", power);
-		drive.runRightDrive(50);
-		drive.runLeftDrive(50);
-	}
-	drive.setBrake();
-	drive.runRightDrive(0);
-	drive.runLeftDrive(0);
-	pros::delay(25);
-
-	target = 15;
-
-	rightEncoder.reset();
-
-
-
-
-	while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-		// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
-		// if(power < -127)
-		// {
-		// 	power = -127;
-		// }
-		//master.print(2,2,"%d", power);
-		drive.runRightDrive(-50);
-		drive.runLeftDrive(-50);
-	}
-	drive.setBrake();
-	drive.runRightDrive(0);
-	drive.runLeftDrive(0);
-	pros::delay(25);
-
+	// int target;
+	//
+	// PIDController drivePID =  PIDController(0.15, 0, 0.1);
+	// PIDController turnPID =  PIDController(0.5, 0, 0.1);
+	//
+	// Drivetrain drive = Drivetrain();
+	// const double TICKS_TO_INCHES = (2.75*M_PI)/360;
+	//
+ 	// pros::ADIEncoder rightEncoder('C', 'D', true);
+	// pros::Motor armMotor(16);
+	//
+	// armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	//
+	// target = 60;
+	//
 	// rightEncoder.reset();
 	//
-	// target = 6;
+	//
+	//
 	//
 	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-	// 	//int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
+	// 	// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
+	// 	// if(power < -127)
+	// 	// {
+	// 	// 	power = -127;
+	// 	// }
+	// 	//master.print(2,2,"%d", power);
+	// 	drive.runRightDrive(115);
+	// 	drive.runLeftDrive(115);
+	// }
+	// drive.setBrake();
+	// drive.runRightDrive(0);
+	// drive.runLeftDrive(0);
+	// pros::delay(25);
 	//
+	// // armMotor.tare_position();
+	// // while(armMotor.get_position() > -1800)
+	// // {
+	// // 	armMotor.move_velocity(-90);
+	// // 	pros::delay(25);
+	// // }
+	// // armMotor.move_velocity(0);
+	//
+	// target = 30;
+	//
+	// rightEncoder.reset();
+	//
+	//
+	//
+	//
+	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+	// 	// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
+	// 	// if(power < -127)
+	// 	// {
+	// 	// 	power = -127;
+	// 	// }
+	// 	//master.print(2,2,"%d", power);
 	// 	drive.runRightDrive(50);
 	// 	drive.runLeftDrive(50);
 	// }
+	// drive.setBrake();
 	// drive.runRightDrive(0);
 	// drive.runLeftDrive(0);
-	// pros::delay(100);
+	// pros::delay(25);
+	//
+	// target = 15;
 	//
 	// rightEncoder.reset();
 	//
-	// target = 3;
+	//
+	//
 	//
 	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-	// 	// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
-	// 	// master.print(2,2,"%d", power);
-	// 	// drive.runRightDrive(-power);
-	// 	// drive.runLeftDrive(power);
-	//
-	// 	drive.runRightDrive(50);
+	// 	// int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target);
+	// 	// if(power < -127)
+	// 	// {
+	// 	// 	power = -127;
+	// 	// }
+	// 	//master.print(2,2,"%d", power);
+	// 	drive.runRightDrive(-50);
 	// 	drive.runLeftDrive(-50);
 	// }
+	// drive.setBrake();
 	// drive.runRightDrive(0);
 	// drive.runLeftDrive(0);
-	// pros::delay(50);
+	// pros::delay(25);
 	//
-	// rightEncoder.reset();
-	//
-	// target = 24.5;
-	//
-	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
-	// 	int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
-	// 	if(power < -127)
-	// 	{
-	// 		power = -127;
-	// 	}
-	// 	drive.runRightDrive(power);
-	// 	drive.runLeftDrive(power);
-	// }
-	// drive.runRightDrive(0);
-	// drive.runLeftDrive(0);
-	// pros::delay(100);
-	//
-	// rightEncoder.reset();
-	//
-	// target = 3;
-	//
-	// while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
-	// 	// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
-	// 	// master.print(2,2,"%d", power);
-	// 	// drive.runRightDrive(-power);
-	// 	// drive.runLeftDrive(power);
-	//
-	// 	drive.runRightDrive(-50);
-	// 	drive.runLeftDrive(50);
-	// }
-	// drive.runRightDrive(0);
-	// drive.runLeftDrive(0);
-	// pros::delay(50);
+	// // rightEncoder.reset();
+	// //
+	// // target = 6;
+	// //
+	// // while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+	// // 	//int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, target) * 100;
+	// //
+	// // 	drive.runRightDrive(50);
+	// // 	drive.runLeftDrive(50);
+	// // }
+	// // drive.runRightDrive(0);
+	// // drive.runLeftDrive(0);
+	// // pros::delay(100);
+	// //
+	// // rightEncoder.reset();
+	// //
+	// // target = 3;
+	// //
+	// // while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+	// // 	// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
+	// // 	// master.print(2,2,"%d", power);
+	// // 	// drive.runRightDrive(-power);
+	// // 	// drive.runLeftDrive(power);
+	// //
+	// // 	drive.runRightDrive(50);
+	// // 	drive.runLeftDrive(-50);
+	// // }
+	// // drive.runRightDrive(0);
+	// // drive.runLeftDrive(0);
+	// // pros::delay(50);
+	// //
+	// // rightEncoder.reset();
+	// //
+	// // target = 24.5;
+	// //
+	// // while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target - 0.5){
+	// // 	int power = drivePID.updatePID(rightEncoder.get_value() * TICKS_TO_INCHES, -target) * 70;
+	// // 	if(power < -127)
+	// // 	{
+	// // 		power = -127;
+	// // 	}
+	// // 	drive.runRightDrive(power);
+	// // 	drive.runLeftDrive(power);
+	// // }
+	// // drive.runRightDrive(0);
+	// // drive.runLeftDrive(0);
+	// // pros::delay(100);
+	// //
+	// // rightEncoder.reset();
+	// //
+	// // target = 3;
+	// //
+	// // while(abs(rightEncoder.get_value() * TICKS_TO_INCHES) <= target){
+	// // 	// int power = turnPID.updatePID(rightEncoder.get_value(), -target) * 100;
+	// // 	// master.print(2,2,"%d", power);
+	// // 	// drive.runRightDrive(-power);
+	// // 	// drive.runLeftDrive(power);
+	// //
+	// // 	drive.runRightDrive(-50);
+	// // 	drive.runLeftDrive(50);
+	// // }
+	// // drive.runRightDrive(0);
+	// // drive.runLeftDrive(0);
+	// // pros::delay(50);
 
 
 /**
@@ -250,7 +250,7 @@ void opcontrol() {
 
 
 
-
+	pros::Controller master(CONTROLLER_PARTNER);
 	pros::Controller partner(CONTROLLER_PARTNER);
 
 	pros::ADIDigitalOut piston('A');
