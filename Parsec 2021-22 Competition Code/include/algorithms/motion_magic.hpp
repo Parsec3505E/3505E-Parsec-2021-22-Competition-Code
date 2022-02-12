@@ -8,7 +8,7 @@ class MotionMagic
   private:
 
     //Member Variables
-    Odometry odometry;
+    Odometry* odometry;
 
     //Turn PID Loop
     double deltaX;
@@ -28,7 +28,7 @@ class MotionMagic
   public:
 
     //Constructor
-    MotionMagic();
+    MotionMagic(Drivetrain drivetrain);
 
     //Methods
     double turnToPoint(double targetX, double targetY);

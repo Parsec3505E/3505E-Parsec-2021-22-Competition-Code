@@ -10,10 +10,10 @@ class Arm
     //Motors
     pros::Motor* armMotor;
 
-    const int HIGH_BRANCH;
-    const int MEDIUM_BRANCH;
-    const int LOW_BRANCH;
-    const int RESET;
+    const int HIGH_BRANCH = -1000;
+    const int MEDIUM_BRANCH = -2000;
+    const int LOW_BRANCH = -333;
+    const int RESET = 0;
 
 
   public:

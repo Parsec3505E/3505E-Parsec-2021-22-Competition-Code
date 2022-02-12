@@ -42,7 +42,6 @@ void Vector::genAngles() {
               } else if (components[1] < 0) {
                   theta -= M_PI;
               } else {
-
                   theta = M_PI;
               }
           }

@@ -1,9 +1,6 @@
 #include "main.h"
 
-HIGH_BRANCH = -2000;
-MEDIUM_BRANCH = -1000;
-LOW_BRANCH = -500;
-RESET = 0;
+
 
 
 Arm::Arm(){
@@ -44,7 +41,7 @@ int Arm::potGetVal(){
 //Moving to the different branches
 
 int Arm::getError(int target){
-  return target - armMotor.get_position();
+  return target - armMotor->get_position();
 }
 
 void Arm::moveToHigh(int vel){

@@ -250,7 +250,7 @@ void opcontrol() {
 
 
 
-	pros::Controller master(CONTROLLER_PARTNER);
+	pros::Controller master(CONTROLLER_MASTER);
 	pros::Controller partner(CONTROLLER_PARTNER);
 
 	pros::ADIDigitalOut piston('A');

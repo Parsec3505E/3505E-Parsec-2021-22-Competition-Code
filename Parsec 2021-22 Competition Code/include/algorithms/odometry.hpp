@@ -7,9 +7,7 @@ class Odometry {
   private:
 
     //Encoders
-    pros::ADIEncoder* rightEncoder;
-    pros::ADIEncoder* leftEncoder;
-    pros::ADIEncoder* backEncoder;
+    Drivetrain odom_drivetrain;
 
     //Member Variables
     double right_encoder_val;
@@ -46,9 +44,9 @@ class Odometry {
     double deltay;
 
     //Constants
-    const double RIGHT_ENCODER_OFFSET;
-    const double LEFT_ENCODER_OFFSET;
-    const double BACK_ENCODER_OFFSET;
+    double RIGHT_ENCODER_OFFSET = 0;
+    double LEFT_ENCODER_OFFSET= 0;
+    double BACK_ENCODER_OFFSET = 0;
 
 
     Vector* position;
@@ -57,7 +55,7 @@ class Odometry {
 
   public:
 
-    Odometry(pros::ADIEncoder *rightEncoder, pros::ADIEncoder *leftEncoder, pros::ADIEncoder *backEncoder);
+    Odometry(Drivetrain drivetrain);
 
 
     void setStartLocation(Vector startPos, double startHeading);

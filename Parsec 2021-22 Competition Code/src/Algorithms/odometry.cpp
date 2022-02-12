@@ -1,10 +1,7 @@
 #include "main.h"
 
-Odometry::Odometry(pros::ADIEncoder *rightEncoder, pros::ADIEncoder *leftEncoder, pros::ADIEncoder *backEncoder){
-      this->rightEncoder = rightEncoder;
-      this->leftEncoder = leftEncoder;
-      this->backEncoder = backEncoder;
-
+Odometry::Odometry(Drivetrain drivetrain){
+      odom_drivetrain = drivetrain;
 }
 
 
@@ -17,9 +14,9 @@ void Odometry::setStartLocation(Vector startPos, double startHeading){
 
 void Odometry::updatePos(){
 
-  right_encoder_val = rightEncoder->get_value();
-  left_encoder_val = leftEncoder->get_value();
-  back_encoder_val = backEncoder->get_value();
+  right_encoder_val = odom_drivetrain.getRightEncoderVal();
+  left_encoder_val = odom_drivetrain.getLeftEncoderVal();
+  back_encoder_val = odom_drivetrain.getBackEncoderVal();
 
   delta_right_val = right_encoder_val - prev_right_val;
   delta_left_val = left_encoder_val - prev_left_val;
@@ -29,8 +26,8 @@ void Odometry::updatePos(){
   heading += deltaHeading;
 
   if(deltaHeading == 0){
-    deltaX = delta_back_val;
-    deltaY = (delta_left_val + delta_right_val)/2;
+    deltax = delta_back_val;
+    deltay = (delta_left_val + delta_right_val)/2;
   }else{
     localRadiusY = (delta_left_val / deltaHeading) - RIGHT_ENCODER_OFFSET;
     localRadiusX = (delta_back_val / deltaHeading) + BACK_ENCODER_OFFSET;
@@ -38,11 +35,11 @@ void Odometry::updatePos(){
     localDisY = 2*sin(deltaHeading/2)*localRadiusY;
     localDisX = 2*sin(deltaHeading/2)*localRadiusX;
 
-    deltaY = sin(deltaHeading/2)*localDisX + cos(deltaHeading/2)*localDisY;
-    deltaX = cos(deltaHeading/2)*localDisX - sin(deltaHeading/2)*localDisY;
+    deltax = sin(deltaHeading/2)*localDisX + cos(deltaHeading/2)*localDisY;
+    deltay = cos(deltaHeading/2)*localDisX - sin(deltaHeading/2)*localDisY;
   }
 
-  globalCentricDelta = new Vector(deltaX, deltaY);
+  globalCentricDelta = new Vector(deltax, deltay);
   globalCentricDelta->rotate(heading);
   position->add(*globalCentricDelta);
 

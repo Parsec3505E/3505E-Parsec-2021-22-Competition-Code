@@ -1,25 +1,24 @@
 #include "main.h"
 
-MotionMagic::MotionMagic(){
-  odometry = Odometry(Drivetrain.rightEncoder, Drivetrain.leftEncoder, Drivetrain.backEncoder);
+MotionMagic::MotionMagic(Drivetrain drivetrain){
+  odometry = new Odometry(drivetrain);
 }
 
 //Drive Methods
 double MotionMagic::turnToPoint(double targetX, double targetY){
-  current_pos = odometry.getPos();
-  current_heading = odometry.getHeading();
+  Vector* current_pos = odometry->getPos();
+  double current_heading = odometry->getHeading();
 
-  deltaX = targetX - currentX;
-  deltaY = targetY - currentY;
+  deltaX = targetX - current_pos->getComponent(0);
+  deltaY = targetY - current_pos->getComponent(1);
 
   targetHeading = atan(-deltaX/deltaY);
 
   if(deltaY > 0){
-    alpha = targetHeading - current_heading;
+    targetHeading += M_PI;
   }
-  else{
-    alpha = (targetHeading - current_heading) + M_PI;
-  }
+
+  alpha = targetHeading - current_heading;
 
   if(alpha > M_PI){
     alpha = ((2*M_PI) - alpha)*-1;
