@@ -34,12 +34,15 @@ class Arm
     int potGetVal();
 
     //Move to specific heights to score on the different branches
-    int getError(); //Get the error of how far off the arm is from it's target/setpoint
+    int getError(int target);
 
-    void moveToHigh();
-    void moveToMedium();
-    void moveToLow();
-    void moveToReset();
+    void moveToHigh(int vel);
+
+    void moveToMedium(int vel);
+
+    void moveToLow(int vel);
+
+    void moveToReset(int vel);
 
 };
 
