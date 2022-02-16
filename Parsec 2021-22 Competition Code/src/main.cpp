@@ -258,18 +258,18 @@ void opcontrol() {
 
 	pros::ADIEncoder rightEncoder('C', 'D', true);
 
-	pros::Motor rightBack(11, true);
-	pros::Motor rightFront(3, true);
-	pros::Motor leftFront(9);
-	pros::Motor leftBack(4);
+	pros::Motor rightBack(6, true);
+	pros::Motor rightFront(11, true);
+	pros::Motor leftFront(4);
+	pros::Motor leftBack(17);
 
 	pros::Motor spinner(20);
 
-	pros::Motor outtake(14);
+	pros::Motor outtake(1);
 
-	pros::Motor arm(16);
+	pros::Motor arm(10);
 
-	pros::Motor intake(6);
+	pros::Motor intake(9);
 
 	outtake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -334,11 +334,11 @@ void opcontrol() {
 			piston_state++;
 		}
 
-		//Spinner Control
-		if (partner.get_digital(DIGITAL_L1)) {
+		//Stick Control
+		if (partner.get_digital(DIGITAL_L2)) {
 			outtake.move_velocity(20);
 		}
-		else if (partner.get_digital(DIGITAL_L2)) {
+		else if (partner.get_digital(DIGITAL_L1)) {
 			outtake.move_velocity(-20);
 		}
 		else {

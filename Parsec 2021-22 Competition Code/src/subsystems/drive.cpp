@@ -2,10 +2,10 @@
 
 Drivetrain::Drivetrain(){
   //Motor Objects
-  rightFront = new pros::Motor(3, true);
+  rightFront = new pros::Motor(4, true);
   rightBack = new pros::Motor(11, true);
 	leftFront = new pros::Motor(9);
-	leftBack = new pros::Motor(4);
+	leftBack = new pros::Motor(6);
 
   setBrake();
 
