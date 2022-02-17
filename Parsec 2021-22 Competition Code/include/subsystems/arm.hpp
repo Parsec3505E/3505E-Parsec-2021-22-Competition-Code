@@ -2,7 +2,6 @@
 #define _ARM_HPP_INCLUDED
 
 #include "main.h"
-
 class Arm
 {
   private:
