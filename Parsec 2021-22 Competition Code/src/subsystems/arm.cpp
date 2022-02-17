@@ -45,17 +45,17 @@ int Arm::getError(int target){
 }
 
 void Arm::moveToHigh(int vel){
-  armMotor.move_relative(getError(HIGH_BRANCH), vel);
+  armMotor->move_relative(getError(HIGH_BRANCH), vel);
 }
 
 void Arm::moveToMedium(int vel){
-  armMotor.move_relative(getError(MEDIUM_BRANCH), vel);
+  armMotor->move_relative(getError(MEDIUM_BRANCH), vel);
 }
 
 void Arm::moveToLow(int vel){
-  armMotor.move_relative(getError(LOW_BRANCH), vel);
+  armMotor->move_relative(getError(LOW_BRANCH), vel);
 }
 
 void Arm::moveToReset(int vel){
-  armMotor.move_relative(getError(RESET), vel);
+  armMotor->move_relative(getError(RESET), vel);
 }
