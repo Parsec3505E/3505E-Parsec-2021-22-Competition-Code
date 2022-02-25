@@ -366,6 +366,12 @@ void opcontrol() {
 		else if (partner.get_digital(DIGITAL_A)) {
 			spinner.move_velocity(-100);
 		}
+		else if (master.get_digital(DIGITAL_A)) {
+			spinner.move_velocity(-100);
+		}
+		else if (master.get_digital(DIGITAL_Y)) {
+			spinner.move_velocity(100);
+		}
 		else {
 			spinner.move_velocity(0);
 		}
