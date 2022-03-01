@@ -430,10 +430,10 @@ void opcontrol() {
 
 
 		//Stick/outtake Controller
-		if (master.get_digital(DIGITAL_Y)) {
+		if (partner.get_digital(DIGITAL_Y) || master.get_digital(DIGITAL_Y)) {
 			spinner.move_velocity(100);
 		}
-		else if (master.get_digital(DIGITAL_A)) {
+		else if (partner.get_digital(DIGITAL_A) || master.get_digital(DIGITAL_A)) {
 			spinner.move_velocity(-100);
 		}
 		else {
