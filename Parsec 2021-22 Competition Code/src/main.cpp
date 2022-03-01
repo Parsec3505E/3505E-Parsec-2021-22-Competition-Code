@@ -30,6 +30,7 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+	pros::Motor motor(10);
 
 
 }
@@ -64,6 +65,61 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+
+
+
+
+	// ***************************** USE THIS FOR FEB 19 COMP *****************************
+	Drivetrain drive = Drivetrain();
+	Arm arm = Arm();
+	pros::ADIDigitalOut piston('A');
+	arm.setHold();
+
+
+	// drive.move_forward(380, 50);
+	// arm.moveToSetpoint(2400, 70);
+	// drive.move_forward(730, 50);
+	// drive.move_backward(800, 70);
+	// drive.turn_left(250, 30);
+	// drive.move_forward(1800, 80);
+	// drive.turn_right(280, 30);
+	// drive.move_forward(5000, 100);
+	// drive.move_backward(700, 70);
+
+	// PROVINCIALS
+	drive.move_forward(380, 50);
+	arm.moveToSetpoint(2400, 70);
+	piston.set_value(true);
+	drive.move_forward(730, 50);
+	drive.move_backward(800, 90);
+	drive.turn_left(250, 50);
+	drive.move_forward(2500, 80);
+	piston.set_value(false);
+	drive.move_backward(1300, 100);
+
+
+
+	// drive.move_forward(520, 50);
+	// drive.move_backward(400, 50);
+
+
+	// drive.resetIntegrated();
+	// drive.move_forward(500, 50);
+
+	//drive.move_forward(350, 50);
+
+	// drive.resetIntegrated();
+	// pros::delay(1);
+	// drive.move_backward(300, 80);
+	// drive.turn_left(45, 25);
+	// drive.move_forward(100, 50);
+	// drive.turn_right(45, 25);
+	// drive.move_forward(3000, 95);
+
+
+
+
+
 	// int target;
 	//
 	// PIDController drivePID =  PIDController(0.15, 0, 0.1);
@@ -212,7 +268,7 @@ void autonomous() {
 	// // 	drive.runRightDrive(-50);
 	// // 	drive.runLeftDrive(50);
 	// // }
-	// // drive.runRightDrive(0);
+	// // drive.runRightD00rive(0);
 	// // drive.runLeftDrive(0);
 	// // pros::delay(50);
 
@@ -234,16 +290,18 @@ void autonomous() {
 }
 void opcontrol() {
 // 	pros::Controller master(CONTROLLER_MASTER);
-// 	Arm *arm = new Arm();
-// 	armMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-// 	armMotor.tare_position();
+// 	Arm arm = Arm();
+// 	int highBranchSetpoint = 2700;
+// 	int mediumBranchSetpoint = 1800;
+// 	arm.setHold();
+// 	arm.resetIntegrated();
 // 	while(true){
 // 	if(master.get_digital_new_press(DIGITAL_R1)){
-// 		armMotor.move_relative(-3000, 100);
+// 		arm.preset(highBranchSetpoint, 100);
 // 	}
 //
 // 	if(master.get_digital_new_press(DIGITAL_L1)){
-// 		armMotor.move_relative(-5000, 100);
+// 		arm.preset(mediumBranchSetpoint, 100)
 //
 // 	}
 // }
@@ -258,21 +316,26 @@ void opcontrol() {
 
 	pros::ADIEncoder rightEncoder('C', 'D', true);
 
-	pros::Motor rightBack(11, true);
-	pros::Motor rightFront(3, true);
-	pros::Motor leftFront(9);
-	pros::Motor leftBack(4);
+	pros::Motor rightBack(6, true);
+	pros::Motor rightFront(11, true);
+	pros::Motor leftFront(4);
+	pros::Motor leftBack(17);
 
 	pros::Motor spinner(20);
 
-	pros::Motor outtake(14);
+	pros::Motor outtake(1);
 
-	pros::Motor arm(16);
+	pros::Motor arm(10, true);
 
-	pros::Motor intake(6);
+	pros::Motor intake(9);
 
 	outtake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+	rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	leftBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
 	int piston_state = 0;
 	int secondary_state = 0;
@@ -291,6 +354,8 @@ void opcontrol() {
 
 		bool outtake_button = partner.get_digital_new_press(DIGITAL_DOWN);
 		bool intake_stop = partner.get_digital_new_press(DIGITAL_LEFT);
+
+		bool armPreset = master.get_digital_new_press(DIGITAL_X);
 
 		//Drive Control
 		int power = master.get_analog(ANALOG_RIGHT_Y);
@@ -313,15 +378,18 @@ void opcontrol() {
 
 
 		//Arm Control
-		if (partner.get_digital(DIGITAL_R1)) {
+		if (partner.get_digital(DIGITAL_R2)) {
 			arm.move_velocity(100);
 		}
-		else if (partner.get_digital(DIGITAL_R2)) {
+		else if (partner.get_digital(DIGITAL_R1)) {
 			arm.move_velocity(-100);
 		}
 		else {
 			arm.move_velocity(0);
 		}
+
+
+
 
 		//Piston Control
 		if(piston_button && piston_state % 2 == 0) {
@@ -335,6 +403,8 @@ void opcontrol() {
 		}
 
 		//Spinner Control
+
+
 		if (partner.get_digital(DIGITAL_L1)) {
 			outtake.move_velocity(20);
 		}
@@ -360,10 +430,10 @@ void opcontrol() {
 
 
 		//Stick/outtake Controller
-		if (partner.get_digital(DIGITAL_Y)) {
+		if (master.get_digital(DIGITAL_Y)) {
 			spinner.move_velocity(100);
 		}
-		else if (partner.get_digital(DIGITAL_A)) {
+		else if (master.get_digital(DIGITAL_A)) {
 			spinner.move_velocity(-100);
 		}
 		else {

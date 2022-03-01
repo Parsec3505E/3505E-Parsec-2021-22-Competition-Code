@@ -28,6 +28,7 @@ class Arm
     //Motor Methods
     void setBrake();
     void setCoast();
+    void setHold();
 
     //Ring Detector Methods
     int calibratePot();
@@ -43,6 +44,13 @@ class Arm
     void moveToLow(int vel);
 
     void moveToReset(int vel);
+
+
+    // Auton Methods
+    void moveToSetpoint(int height, int vel);
+    void preset(int setpoint, int vel);
+    int getPose();
+    void resetIntegrated();
 
 };
 

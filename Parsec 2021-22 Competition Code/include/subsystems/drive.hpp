@@ -32,6 +32,7 @@ class Drivetrain
     //Motor Methods
     void setBrake();
     void setCoast();
+    void setHold();
 
     //Encoder Methods
 
@@ -39,11 +40,20 @@ class Drivetrain
     int getRightEncoderVal();
     int getLeftEncoderVal();
     int getBackEncoderVal();
+    int getRightIntegrated();
 
     //Reset Encoders
     void resetRightEncoder();
     void resetLeftEncoder();
     void resetBackEncoder();
+
+    //Auton Mehtods
+    void move_forward(int distance, int vel);
+    void move_backward(int distance, int vel);
+    void turn_right(int distance, int vel);
+    void turn_left(int distance, int vel);
+
+    void resetIntegrated();
 
 
 };

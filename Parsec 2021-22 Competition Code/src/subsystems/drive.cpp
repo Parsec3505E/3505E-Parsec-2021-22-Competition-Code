@@ -2,10 +2,12 @@
 
 Drivetrain::Drivetrain(){
   //Motor Objects
-  rightFront = new pros::Motor(3, true);
-  rightBack = new pros::Motor(11, true);
-	leftFront = new pros::Motor(9);
-	leftBack = new pros::Motor(4);
+  rightFront = new pros::Motor(11, true);
+  rightBack = new pros::Motor(6, true);
+	leftFront = new pros::Motor(4);
+	leftBack = new pros::Motor(17);
+
+
 
   setBrake();
 
@@ -50,6 +52,13 @@ void Drivetrain::setCoast(){
   leftBack->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 }
 
+void Drivetrain::setHold(){
+  rightFront->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  rightBack->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  leftFront->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  leftBack->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+}
+
 //Encoder Methods
 
 int Drivetrain::getRightEncoderVal(){
@@ -64,6 +73,10 @@ int Drivetrain::getBackEncoderVal(){
   return backEncoder->get_value();
 }
 
+int Drivetrain::getRightIntegrated(){
+  return rightFront->get_position();
+}
+
 void Drivetrain::resetRightEncoder(){
   rightEncoder->reset();
 }
@@ -74,4 +87,57 @@ void Drivetrain::resetLeftEncoder(){
 
 void Drivetrain::resetBackEncoder(){
   backEncoder->reset();
+}
+
+
+//Auton Methods
+void Drivetrain::move_forward(int distance, int vel){
+
+  resetIntegrated();
+  while(abs(getRightIntegrated()) <= distance){
+  	setRightVelocity(vel);
+  	setLeftVelocity(vel);
+  }
+  setRightVelocity(0);
+  setLeftVelocity(0);
+
+
+}
+
+void Drivetrain::move_backward(int distance, int vel){
+  resetIntegrated();
+  while(abs(getRightIntegrated()) <= distance){
+  	setRightVelocity(-vel);
+  	setLeftVelocity(-vel);
+  }
+  setRightVelocity(0);
+  setLeftVelocity(0);
+}
+
+void Drivetrain::turn_right(int distance, int vel){
+  resetIntegrated();
+  while(abs(getRightIntegrated()) <= distance){
+  	setRightVelocity(-vel);
+  	setLeftVelocity(vel);
+  }
+  setRightVelocity(0);
+  setLeftVelocity(0);
+}
+
+void Drivetrain::turn_left(int distance, int vel){
+  resetIntegrated();
+  while(abs(getRightIntegrated()) <= distance){
+  	setRightVelocity(vel);
+  	setLeftVelocity(-vel);
+  }
+  setRightVelocity(0);
+  setLeftVelocity(0);
+}
+
+// Reseting integrated encoders
+void Drivetrain::resetIntegrated(){
+  rightFront->tare_position();
+  rightBack->tare_position();
+  leftFront->tare_position();
+  leftBack->tare_position();
 }

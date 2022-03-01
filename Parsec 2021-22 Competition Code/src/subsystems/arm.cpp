@@ -6,7 +6,7 @@
 Arm::Arm(){
 
   //Motor Objects
-  armMotor = new pros::Motor(16, true);
+  armMotor = new pros::Motor(10, true);
 
 }
 
@@ -26,6 +26,11 @@ void Arm::setBrake(){
 void Arm::setCoast(){
   armMotor->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 }
+
+void Arm::setHold(){
+  armMotor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+}
+
 
 //Ring Detector Mehtods
 
@@ -58,4 +63,31 @@ void Arm::moveToLow(int vel){
 
 void Arm::moveToReset(int vel){
   armMotor->move_relative(getError(RESET), vel);
+}
+
+//Auton Methods
+
+void Arm::moveToSetpoint(int height, int vel){
+  resetIntegrated();
+  while(abs(getPose()) <= height){
+    moveVelocity(vel);
+
+  }
+  moveVelocity(0);
+
+
+}
+
+void Arm::preset(int setpoint, int vel){
+  int current_pos = armMotor->get_position();
+  int newTarget = setpoint - current_pos;
+  armMotor->move_relative(newTarget, vel);
+}
+
+int Arm::getPose(){
+  return armMotor->get_position();
+}
+
+void Arm::resetIntegrated(){
+  armMotor->tare_position();
 }
