@@ -33,7 +33,6 @@ void Arm::setHold(){
 
 
 //Ring Detector Mehtods
-
 int Arm::calibratePot(){
   return pros::c::ext_adi_analog_calibrate(10, 'C');
 }
