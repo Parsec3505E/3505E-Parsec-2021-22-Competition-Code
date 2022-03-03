@@ -41,6 +41,7 @@ class Drivetrain
     int getLeftEncoderVal();
     int getBackEncoderVal();
     int getRightIntegrated();
+    int getRightBackIntegrated();
 
     //Reset Encoders
     void resetRightEncoder();
@@ -52,6 +53,7 @@ class Drivetrain
     void move_backward(int distance, int vel);
     void turn_right(int distance, int vel);
     void turn_left(int distance, int vel);
+    void move_forward_back(int distance, int vel);
 
     void resetIntegrated();
 

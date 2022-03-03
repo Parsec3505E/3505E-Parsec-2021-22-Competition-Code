@@ -87,18 +87,34 @@ void autonomous() {
 	// drive.move_backward(700, 70);
 
 	// PROVINCIALS
+	//PROGRAM 1
+
 	drive.move_forward(380, 50);
 	arm.moveToSetpoint(2400, 70);
-	piston.set_value(true);
+	//piston.set_value(true);
 	drive.move_forward(730, 50);
 	drive.move_backward(800, 90);
-	drive.turn_left(250, 50);
-	drive.move_forward(2500, 80);
-	piston.set_value(false);
-	drive.move_backward(1300, 100);
+	drive.turn_right(1300, 50);
+	drive.move_backward(4184, 90);
+	drive.resetIntegrated();
+	
+
+	//PROGRAM 2
+	/*
+	arm.moveToSetpoint(2400, 70);
+	drive.move_backward(30, 90);
+	drive.turn_right(1100, 50);
+	drive.move_backward(4184, 90);
+	drive.resetIntegrated();
+	*/
+
+	//Automated Driving Up Ramp
+	/*
+	drive.move_forward_back(4550, 100);
+	*/
 
 
-
+	//REST STUFF DONT MATTER
 	// drive.move_forward(520, 50);
 	// drive.move_backward(400, 50);
 
@@ -346,6 +362,7 @@ void opcontrol() {
 
 	rightEncoder.reset();
 
+
 	while (true) {
 
 		bool piston_button = partner.get_digital_new_press(DIGITAL_B);
@@ -375,7 +392,6 @@ void opcontrol() {
 			leftFront.move(left);
 			leftBack.move(left);
 		}
-
 
 		//Arm Control
 		if (partner.get_digital(DIGITAL_R2)) {

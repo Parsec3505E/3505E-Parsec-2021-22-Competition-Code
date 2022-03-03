@@ -31,7 +31,7 @@ void Arm::setHold(){
   armMotor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
-
+/*
 //Ring Detector Mehtods
 int Arm::calibratePot(){
   return pros::c::ext_adi_analog_calibrate(10, 'C');
@@ -40,7 +40,7 @@ int Arm::calibratePot(){
 int Arm::potGetVal(){
   return pros::c::ext_adi_analog_read(10, 'C');
 }
-
+*/
 
 //Moving to the different branches
 

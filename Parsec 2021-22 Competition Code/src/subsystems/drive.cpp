@@ -77,6 +77,10 @@ int Drivetrain::getRightIntegrated(){
   return rightFront->get_position();
 }
 
+int Drivetrain::getRightBackIntegrated(){
+  return rightBack->get_position();
+}
+
 void Drivetrain::resetRightEncoder(){
   rightEncoder->reset();
 }
@@ -95,6 +99,19 @@ void Drivetrain::move_forward(int distance, int vel){
 
   resetIntegrated();
   while(abs(getRightIntegrated()) <= distance){
+  	setRightVelocity(vel);
+  	setLeftVelocity(vel);
+  }
+  setRightVelocity(0);
+  setLeftVelocity(0);
+
+
+}
+
+void Drivetrain::move_forward_back(int distance, int vel){
+
+  resetIntegrated();
+  while(abs(getRightBackIntegrated()) <= distance){
   	setRightVelocity(vel);
   	setLeftVelocity(vel);
   }
