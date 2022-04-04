@@ -72,6 +72,8 @@ void autonomous() {
 	// ***************************** USE THIS FOR FEB 19 COMP *****************************
 	Drivetrain drive = Drivetrain();
 	Arm arm = Arm();
+	pros::Motor outtake(1);
+	outtake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	pros::ADIDigitalOut piston('A');
 	arm.setHold();
 
@@ -87,22 +89,22 @@ void autonomous() {
 	// drive.move_backward(700, 70);
 
 	// PROVINCIALS
-	//PROGRAM 1
+	//PROGRAM 1 (RAMP UP SIDE)
 
-	drive.move_forward(380, 50);
-	arm.moveToSetpoint(2400, 70);
+	//drive.move_forward(380, 50);
+	//arm.moveToSetpoint(2500, 65);
 	//piston.set_value(true);
-	drive.move_forward(730, 50);
-	drive.move_backward(800, 90);
-	drive.turn_right(1300, 50);
-	drive.move_backward(4184, 90);
+	//drive.move_forward(730, 50);
+	//drive.move_backward(800, 90);
+	drive.move_backward(4200, 90);
 	drive.resetIntegrated();
-	
 
-	//PROGRAM 2
+
+	//PROGRAM 2 (RAMP DOWN SIDE)
 	/*
-	arm.moveToSetpoint(2400, 70);
-	drive.move_backward(30, 90);
+	arm.moveToSetpoint(2500, 70);
+	drive.move_forward(20, 30);
+	drive.move_backward(50, 90);
 	drive.turn_right(1100, 50);
 	drive.move_backward(4184, 90);
 	drive.resetIntegrated();
@@ -335,23 +337,25 @@ void opcontrol() {
 	pros::Motor rightBack(6, true);
 	pros::Motor rightFront(11, true);
 	pros::Motor leftFront(4);
-	pros::Motor leftBack(17);
+	pros::Motor leftBack(5);
 
 	pros::Motor spinner(20);
 
-	pros::Motor outtake(1);
+	pros::Motor outtake(7);
 
-	pros::Motor arm(10, true);
+	pros::Motor arm(2, true);
 
-	pros::Motor intake(9);
+	pros::Motor intake(12);
 
 	outtake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+
 	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-	rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	leftBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+	rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+	leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+	leftBack.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
 
 	int piston_state = 0;
 	int secondary_state = 0;
@@ -366,7 +370,7 @@ void opcontrol() {
 	while (true) {
 
 		bool piston_button = partner.get_digital_new_press(DIGITAL_B);
-		bool secondary_butn = partner.get_digital_new_press(DIGITAL_RIGHT);
+		bool secondary_butn = partner.get_digital_new_press(DIGITAL_X);
 		bool intake_button = partner.get_digital_new_press(DIGITAL_UP);
 
 		bool outtake_button = partner.get_digital_new_press(DIGITAL_DOWN);
@@ -418,6 +422,17 @@ void opcontrol() {
 			piston_state++;
 		}
 
+		// secondary control
+		if(secondary_butn && secondary_state % 2 == 0) {
+			secondary.set_value(true);
+			secondary_state++;
+		}
+
+		else if(secondary_butn && secondary_state % 2 != 0) {
+			secondary.set_value(false);
+			secondary_state++;
+		}
+
 		//Spinner Control
 
 
@@ -446,25 +461,54 @@ void opcontrol() {
 
 
 		//Stick/outtake Controller
-		if (partner.get_digital(DIGITAL_Y) || master.get_digital(DIGITAL_Y)) {
+		if (partner.get_digital(DIGITAL_Y) || master.get_digital(DIGITAL_L1)) {
 			spinner.move_velocity(100);
 		}
-		else if (partner.get_digital(DIGITAL_A) || master.get_digital(DIGITAL_A)) {
+		else if (partner.get_digital(DIGITAL_A) || master.get_digital(DIGITAL_L2)) {
 			spinner.move_velocity(-100);
 		}
 		else {
 			spinner.move_velocity(0);
 		}
 
-		if(intake_button) {
-			intake.move(128);
+		// if(intake_button || partner.get_analog(ANALOG_RIGHT_Y)) {
+		// 	intake.move(90);
+		// }
+		// else if(outtake_button || partner.get_analog(ANALOG_RIGHT_Y)) {
+		// 	intake.move(-90);
+		// }
+		// else if(intake_stop){
+		// 	intake.move(0);
+		// }
+
+		// int secondary_control = partner.get_analog(ANALOG_RIGHT_Y);
+		// if(abs(secondary_control) < 10)
+		// {
+		// 	intake.move(secondary_control*-1);
+		// }
+		// else if(intake_button){
+		// 	intake.move(90);
+		// }
+		// else if(outtake_button){
+		// 	intake.move(-90);
+		// }
+		// else if(intake_stop){
+		// 	intake.move(0);
+		// }
+
+		if(master.get_digital((DIGITAL_R1))){
+			intake.move(90);
 		}
-		else if(outtake_button) {
-			intake.move(-129);
+		else if(master.get_digital(DIGITAL_R2)){
+			intake.move(-90);
 		}
-		else if(intake_stop){
+		else{
 			intake.move(0);
 		}
+
+
+
+
 
 	}
 
